@@ -1,15 +1,17 @@
 import app from "./app.js";
 import 'dotenv/config';
-// import { testConnection, sql } from "./dbConnection.js";
+import { testConnection, sql } from "./db_connection.js";
 
 // const port = process.env.PORT;
 
+const serverPort = process.env.PORT;
+
 (async () => {
     try {
-        // await testConnection();
+        await testConnection();
 
-        app.listen(port, () => {
-            console.log(`Server is ready and using ${port} port`);
+        app.listen(serverPort, () => {
+            console.log(`Server is ready and using ${serverPort} port`);
         })
     } catch (error) {
         console.log(error.message);
@@ -19,6 +21,6 @@ import 'dotenv/config';
 
 process.on("SIGINT", async () => {
   console.log("Closing database");
-  await sql.end();
-  process.exit(0);
+  await sql.end();   
+  process.exit(0); 
 })

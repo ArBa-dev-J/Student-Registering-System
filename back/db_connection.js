@@ -10,4 +10,4 @@ export const testConnection = async () => {
     } catch (err) {
         console.log(`Failed to connect to the database ${process.env.PPOSTGRES_DB}, ${err}`);
     }
-};
+}; 
