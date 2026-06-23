@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS public.students (
     CONSTRAINT fk_student_subject
         FOREIGN KEY (subject_id)
         REFERENCES public.subjects(id)
-        ON DELETE CASCADE
 );
 
 COMMIT;
