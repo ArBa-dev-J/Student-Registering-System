@@ -1,15 +1,35 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 
 function StudentForm() {
   const [serverError, setServerError] = useState();
   const [serverDataError, setServerDataError] = useState([]);
-  const [success, setSuccess] = useState(null);
+  const [fetchError, setFetchError] = useState();
 
+  const [success, setSuccess] = useState(null);
+  const [subjects, setSubjects] = useState([]);
   const VITE_API_URL = import.meta.env.VITE_API_URL;
 
+  // -----------------------------------------------
+
+  // get all subjects directly from db
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get(`${VITE_API_URL}/subjects/allSubjects`);
+
+      setFetchError(null);
+      setSubjects(response.data.data);
+    } catch (error) {
+      setFetchError(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
+  // -----------------------------------------------
   const {
     register,
     handleSubmit,
@@ -24,65 +44,110 @@ function StudentForm() {
   return (
     <>
       <main>
-        <div className="mt-[50%] max-w-md mx-auto p-6 bg-white shadow rounded">
-          <div className="flex justify-between items-baseline">
-            <h2 className="text-xl font-semibold mb-4">Add New Student</h2>
+        <div className="mt-[50%]  max-w-lg mx-auto mt-20 bg-white rounded-xl shadow-lg p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Add New Student
+            </h2>
 
-            <Link to="/">Exit to main page</Link>
+            <Link to="/" className="text-blue-600 hover:text-blue-800 text-sm">
+              Back
+            </Link>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Subject Name */}
-            <div className="mb-4">
-              <label className="block mb-1">Student Name</label>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Student Name
+              </label>
+
               <input
                 type="text"
                 {...register("name", {
                   required: "Student name is required",
                 })}
-                className="w-full border p-2 rounded"
-                placeholder="e.g. Mathematics"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="John"
               />
-              {errors.subject_name && (
-                <p className="text-red-500 text-sm">
-                  {errors.subject_name.message}
+
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
                 </p>
               )}
-
-              <p className="text-red-500 text-sm">
-                {/* {getServerError("subject_name")} */}
-              </p>
             </div>
 
-            {/* Credit Score */}
-            <div className="mb-4">
-              <label className="block mb-1">Credit Score</label>
+            {/* Surname */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Student Surname
+              </label>
+
               <input
-                type="number"
+                type="text"
                 {...register("surname", {
-                  required: "Credit score is required",
+                  required: "Student surname is required",
                 })}
-                className="w-full border p-2 rounded"
-                placeholder="e.g. from 0 to 100"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Smith"
               />
-              {errors.credit_score && (
-                <p className="text-red-500 text-sm">
-                  {errors.credit_score.message}
+
+              {errors.surname && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.surname.message}
                 </p>
               )}
-
-              <p className="text-red-500 text-sm">
-                {/* {getServerError("credit_score")} */}
-              </p>
             </div>
-            <p className="text-red-500 text-sm">{serverError}</p>
-            <p>{success}</p>
 
-            <input
+            {/* Subject Select */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Subject
+              </label>
+
+              <select
+                {...register("subject_id", {
+                  required: "Please select a subject",
+                  valueAsNumber: true,
+                })}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select a subject</option>
+
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.subject_name}
+                  </option>
+                ))}
+              </select>
+
+              {errors.subject_id && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.subject_id.message}
+                </p>
+              )}
+            </div>
+
+            {/* Server Messages */}
+            {serverError && (
+              <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm">
+                {serverError}
+              </div>
+            )}
+
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-600 p-3 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
+
+            <button
               type="submit"
-              value="add a new subject"
-              className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            />
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition"
+            >
+              Add Student
+            </button>
           </form>
         </div>
       </main>
