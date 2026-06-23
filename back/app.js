@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import subjectRoutes from "./routes/subjectRoutes.js";
 
 // const CLIENT_URL = process.env.CLIENT_URL;
 
@@ -13,7 +14,7 @@ app.use(express.json());
 // );
 
 // Routes
-
+app.use("/api/v1/subjects", subjectRoutes);
 
 //for testing server status
 app.get("/health", (req, res) => {
