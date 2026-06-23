@@ -1,7 +1,14 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Link } from "react-router";
+import axios from "axios"
 
 export default function SubjectForm() {
+  const [serverError, setServerError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const VITE_API_URL = import.meta.env.VITE_API_URL ;
+
   const {
     register,
     handleSubmit,
@@ -9,13 +16,26 @@ export default function SubjectForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("New Subject:", data);
+  const onSubmit = async (data) => {
+    setSuccess(null);
+    setServerError(null);
+    try {
+      const response = await axios.post(
+        `${VITE_API_URL}/subjects/newSubjects`,
+        data,
+      );
 
-    // API call can go here
-    // await fetch("/api/subjects", { method: "POST", body: JSON.stringify(data) });
 
-    reset();
+      setSuccess(`${data.subject_name} was successfully added`);
+      setServerError(null);
+      if (response) reset();
+    } catch (error) {
+        console.log(error);
+        
+      setServerError(
+        error?.response?.data.error?.[0].msg || error?.response?.data.message,
+      );
+    }
   };
 
   return (
@@ -39,9 +59,9 @@ export default function SubjectForm() {
               className="w-full border p-2 rounded"
               placeholder="e.g. Mathematics"
             />
-            {errors.subjectName && (
+            {errors.subject_name && (
               <p className="text-red-500 text-sm">
-                {errors.subjectName.message}
+                {errors.subject_name.message}
               </p>
             )}
           </div>
@@ -57,19 +77,20 @@ export default function SubjectForm() {
               className="w-full border p-2 rounded"
               placeholder="e.g. from 0 to 100"
             />
-            {errors.creditScore && (
+            {errors.credit_score && (
               <p className="text-red-500 text-sm">
-                {errors.creditScore.message}
+                {errors.credit_score.message}
               </p>
             )}
           </div>
+          <p>{serverError}</p>
+          <p>{success}</p>
 
-          <button
+          <input
             type="submit"
+            value="add a new subject"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Add Subject
-          </button>
+          />
         </form>
       </div>
     </main>

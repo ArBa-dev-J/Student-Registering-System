@@ -6,7 +6,7 @@ export const addNewCityM = async (data) => {
 
     const newCity = await sql`
     INSERT INTO subjects (subject_name,  credit_score)
-    VALUES (${data.subject_name}, ${Number(data.credit_score)})
+    VALUES (${data.subject_name.toString()}, ${Number(data.credit_score)})
     RETURNING *;
     `
 

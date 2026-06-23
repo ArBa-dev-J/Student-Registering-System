@@ -5,8 +5,6 @@ import { addNewCityM, doesSubjectExistM } from "../model/subjectModel.js";
 export const addNewSubjectC = async (req, res) => {
   try {
    const data = req.body;
-   console.log(data);
-   
    data.subject_name = req.capitalizedName;
 
     // simple data check if exists
