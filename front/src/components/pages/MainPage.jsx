@@ -11,9 +11,11 @@ function MainPage() {
         <p className="text-gray-600 mb-8">Choose an option below</p>
 
         <div className="flex gap-6">
+          <Link to="/newStudent">
           <button className="cursor-pointer px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
             Add New Student
           </button>
+          </Link>
 
           <Link to="/newSubject">
             <button className="cursor-pointer  px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition">

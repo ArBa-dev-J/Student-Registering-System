@@ -3,35 +3,40 @@ import { sql } from "../db_connection.js";
 // post new subject
 
 export const addNewSubjectM = async (data) => {
-
-    const newCity = await sql`
+  const newCity = await sql`
     INSERT INTO subjects (subject_name,  credit_score)
     VALUES (${data.subject_name.toString()}, ${Number(data.credit_score)})
     RETURNING *;
-    `
+    `;
 
-    return newCity;
-}
+  return newCity;
+};
 
 // get subject by id
 
-export const getSubjectByIdM = async (id)  => {
-    const exists = await sql`
+export const getSubjectByIdM = async (id) => {
+  const exists = await sql`
     SELECT subject_name FROM subjects
     WHERE id = ${Number(id)}
-    `
-    return exists;
-}
-
+    `;
+  return exists;
+};
 
 // get city
 
 export const doesSubjectExistM = async (data) => {
-
-    const exists = await sql`
+  const exists = await sql`
     SELECT subject_name FROM subjects
     WHERE subject_name = ${data.subject_name};
     `;
 
-    return exists[0];
-}
+  return exists[0];
+};
+
+// get all subjects
+
+export const getAllSubjectsM = async () => {
+  return await sql`
+SELECT * FROM subjects;
+`;
+};
