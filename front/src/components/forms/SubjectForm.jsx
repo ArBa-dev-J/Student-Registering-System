@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Link } from "react-router";
-import axios from "axios"
+import axios from "axios";
 
 export default function SubjectForm() {
-  const [serverError, setServerError] = useState(null);
+  const [serverError, setServerError] = useState();
+  const [serverDataError, setServerDataError] = useState([]);
   const [success, setSuccess] = useState(null);
 
-  const VITE_API_URL = import.meta.env.VITE_API_URL ;
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
 
   const {
     register,
@@ -25,17 +26,19 @@ export default function SubjectForm() {
         data,
       );
 
-
       setSuccess(`${data.subject_name} was successfully added`);
       setServerError(null);
       if (response) reset();
     } catch (error) {
-        console.log(error);
-        
-      setServerError(
-        error?.response?.data.error?.[0].msg || error?.response?.data.message,
-      );
+      setServerDataError(error?.response?.data?.error);
+      setServerError(error?.response?.data?.message);
     }
+  };
+
+  // filter data errors by specific fields
+
+  const getServerError = (fieldName) => {
+    return serverDataError?.find((error) => error.path === fieldName)?.msg;
   };
 
   return (
@@ -64,6 +67,8 @@ export default function SubjectForm() {
                 {errors.subject_name.message}
               </p>
             )}
+
+            <p className="text-red-500 text-sm">{getServerError("subject_name")}</p>
           </div>
 
           {/* Credit Score */}
@@ -82,8 +87,10 @@ export default function SubjectForm() {
                 {errors.credit_score.message}
               </p>
             )}
+
+            <p className="text-red-500 text-sm">{getServerError("credit_score")}</p>
           </div>
-          <p>{serverError}</p>
+          <p className="text-red-500 text-sm">{serverError}</p>
           <p>{success}</p>
 
           <input
