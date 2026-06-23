@@ -3,6 +3,7 @@ const capitalLetter = (req, res, next) => {
     try {
         const data = req.body;
 
+
         // converts city name's first letter to upper case
 
         const firstUpperCase = data.subject_name.charAt(0).toLocaleUpperCase();

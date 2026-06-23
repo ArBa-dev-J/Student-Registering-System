@@ -1,0 +1,22 @@
+meta {
+  name: newsubject
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/v1/subjects/newSubjects
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "subject_name": "test",
+    "credit_score": 100
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -2,7 +2,7 @@ import { sql } from "../db_connection.js";
 
 // post new subject
 
-export const addNewCityM = async (data) => {
+export const addNewSubjectM = async (data) => {
 
     const newCity = await sql`
     INSERT INTO subjects (subject_name,  credit_score)
@@ -11,6 +11,16 @@ export const addNewCityM = async (data) => {
     `
 
     return newCity;
+}
+
+// get subject by id
+
+export const getSubjectByIdM = async (id)  => {
+    const exists = await sql`
+    SELECT subject_name FROM subjects
+    WHERE id = ${Number(id)}
+    `
+    return exists;
 }
 
 

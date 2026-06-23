@@ -1,4 +1,4 @@
-import { addNewCityM, doesSubjectExistM } from "../model/subjectModel.js";
+import { addNewSubjectM, doesSubjectExistM } from "../model/subjectModel.js";
 
 // insert new student
 
@@ -21,11 +21,11 @@ export const addNewSubjectC = async (req, res) => {
     if (exists)
       return res.status(409).json({
         status: "fail",
-        message: "This city already exists",
+        message: "This subject already exists",
       });
 
     // post new city
-    const post = await addNewCityM(data);
+    const post = await addNewSubjectM(data);
 
     res.status(201).json({ 
       status: "success",
