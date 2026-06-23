@@ -1,0 +1,19 @@
+{
+  "name": "student-registering-system",
+  "version": "1.0.0",
+  "description": "Student Registering System",
+  "main": "null",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArBa-dev-J/Student-Registering-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArBa-dev-J/Student-Registering-System/issues"
+  },
+  "homepage": "https://github.com/ArBa-dev-J/Student-Registering-System#readme"
+}
